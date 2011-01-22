@@ -2,6 +2,7 @@
 
 require 'temple'
 require 'sal/parser'
+require 'sal/filter'
 require 'sal/compiler'
 require 'sal/engine'
 require 'sal/template'

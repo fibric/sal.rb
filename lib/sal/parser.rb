@@ -8,8 +8,21 @@ module Sal
       result = [:multi]
 
       str.each_line do |line|
+        # remove newline
+        line.chomp!
 
+        # remove the indentation
+        line.lstrip!
+
+        if line.empty?
+          result << [:newline]
+          next
+        end
+
+        result << [:static, line]  
       end
+      puts result.inspect
+      result
     end
   end
 end
