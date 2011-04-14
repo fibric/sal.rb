@@ -2,10 +2,17 @@ require 'helper'
 
 class TestObjectReturn < TestSal
 
-  def test_title_change
+  def test_minimal_html
     source = %q{
-  <title data-sal="title">Replace this!</title>
+<html>
+  <head>
+    <title>Sal Test</title>
+  </head>
+  <body>
+    <p>Simple</p>
+  </body>
+</html>
 }
-    assert_html '<title>Sal test</title>', source
+    assert_html '<html><head><title>Sal Test</title></head><body><p>Simple</p></body></html>', source
   end
 end

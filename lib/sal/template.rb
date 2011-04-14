@@ -1,10 +1,13 @@
 module Sal
   # Tilt template implementation for sal
   # @api public
-  class Template < Temple::Template
-    engine Sal::Engine
-  end
+  Template = Temple::Templates::Tilt(Sal::Engine, :register_as => :sal)
 
-  Tilt.register 'sal', Template
+  if Object.const_defined?(:Rails)
+    RailsTemplate = Temple::Templates::Rails(Sal::Engine, :register_as => :sal)
+
+    RailsTemplate.set_default_options :generator => Temple::Generators::RailsOutputBuffer, 
+                                      :disable_capture => true
+  end
 end
 

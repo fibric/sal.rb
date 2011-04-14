@@ -1,10 +1,15 @@
 module Sal
   class Engine < Temple::Engine
-    use Sal::Parser, :file, :tabsize
+    set_default_options :generator => Temple::Generators::ArrayBuffer
+
+    use Sal::Parser, :file, :tabsize, :encoding
     use Sal::Compiler
+    use Temple::HTML::Fast
+
     filter :MultiFlattener    # Collapse nested multis into single multi
     filter :StaticMerger      # Merge several statics into a single static
     filter :DynamicInliner    # Merge several static/dynamic into single dynamic
-    generator :ArrayBuffer
+
+    use(:Generator) { |exp| options[:generator].new(options).call(exp) }
   end
 end

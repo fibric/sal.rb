@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.date              = Date.today.to_s
   s.authors           = ["Andrew Stone"]
   s.email             = ["andy@stonean.com"]
-  s.summary           = %q{sal is a simple template language.}
-  s.description       = %q{sal.rb is an attribute languageryptic.}
-  s.homepage          = %q{http://github.com/stonean/sal.rb}
+  s.summary           = 'sal is a template language.'
+  s.description       = 'sal.rb is an attribute language.'
+  s.homepage          = 'http://github.com/stonean/sal.rb'
   s.extra_rdoc_files  = ["README.md"]
   s.rdoc_options      = ["--charset=UTF-8"]
   s.require_paths     = ["lib"]
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency(%q<nokogiri>, ["~> 1.4.4"])
-  s.add_runtime_dependency(%q<temple>, ["~> 0.1.6"])
+  s.add_runtime_dependency(%q<nokogiri>, ["~> 1.4"])
+  s.add_runtime_dependency(%q<temple>, ["~> 0.2"])
   s.add_runtime_dependency(%q<tilt>, ["~> 1.2"])
 end
