@@ -58,8 +58,13 @@ module Sal
     end
 
     def parse_attrs(node)
-      attrs = []
-      [ :html, :staticattrs] #, ['id', [:static, 'test']] ]
+      attrs = node.attribute_nodes.collect{|an| [an.name, [:static, an.value]] }
+
+      if attrs.empty?
+        [ :html, :staticattrs]
+      else
+        [ :html, :staticattrs] + attrs
+      end
     end
   end
 end
