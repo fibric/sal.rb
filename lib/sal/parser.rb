@@ -7,6 +7,25 @@ module Sal
     set_default_options :tabsize => 4,
                         :encoding => 'utf-8'
 
+    class << self
+      def doctypes
+        @declarations ||= Temple::HTML::Fast::XHTML_DOCTYPES.invert.merge(Temple::HTML::Fast::XHTML_DOCTYPES.invert)
+      end
+
+      def node_types
+        @node_types ||= define_node_types
+      end
+
+      private
+      def define_node_types
+        nt = {}
+        Nokogiri::XML::Node.constants.each do |name|
+          nt[eval("Nokogiri::XML::Node::#{name}")] = name if name =~ /_NODE$/
+        end
+        nt
+      end
+    end # class block
+
     def initialize(options = {})
       super
       @tab = ' ' * @options[:tabsize]
@@ -40,19 +59,24 @@ module Sal
       nodes.children.each do |node|
         ele = node.name
 
-        if node.text?
+        case node.type
+        when Nokogiri::XML::Node::ELEMENT_NODE
+          content = [:multi]
+          stacks.last << [:html, :tag, ele, parse_attrs(node), false, content] 
+          stacks << content
+          parse_nodeset(stacks, node) 
+          stacks.pop
+        when Nokogiri::XML::Node::TEXT_NODE
           str = node.text
           if str.strip.empty?
             stacks.last << [:newline]
           else
             stacks.last << [:static, str] 
           end
+        when Nokogiri::XML::Node::DTD_NODE
+          stacks.last << [:html, :doctype, self.class.doctypes[node.to_s]]
         else
-          content = [:multi]
-          stacks.last << [:html, :tag, ele, parse_attrs(node), false, content] 
-          stacks << content
-          parse_nodeset(stacks, node) 
-          stacks.pop
+          raise "Unexpected node type: #{self.class.node_types[node.node_type]}"
         end
       end
     end
