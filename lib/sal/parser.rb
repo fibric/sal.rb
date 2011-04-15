@@ -12,6 +12,7 @@ module Sal
         @declarations ||= Temple::HTML::Fast::XHTML_DOCTYPES.invert.merge(Temple::HTML::Fast::XHTML_DOCTYPES.invert)
       end
 
+      #TODO: Remove node_types after fleshing out tests
       def node_types
         @node_types ||= define_node_types
       end
@@ -75,6 +76,8 @@ module Sal
           end
         when Nokogiri::XML::Node::DTD_NODE
           stacks.last << [:html, :doctype, self.class.doctypes[node.to_s]]
+        when Nokogiri::XML::Node::COMMENT_NODE
+          stacks.last << [:html, :comment, [:static, node.text]]
         else
           raise "Unexpected node type: #{self.class.node_types[node.node_type]}"
         end
