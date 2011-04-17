@@ -8,10 +8,6 @@ module Sal
                         :encoding => 'utf-8'
 
     class << self
-      def doctypes
-        @declarations ||= Temple::HTML::Fast::XHTML_DOCTYPES.invert.merge(Temple::HTML::Fast::XHTML_DOCTYPES.invert)
-      end
-
       #TODO: Remove node_types after fleshing out tests
       def node_types
         @node_types ||= define_node_types
@@ -75,7 +71,7 @@ module Sal
             stacks.last << [:static, str] 
           end
         when Nokogiri::XML::Node::DTD_NODE
-          stacks.last << [:html, :doctype, self.class.doctypes[node.to_s]]
+          stacks.last << [:static, node.to_s]
         when Nokogiri::XML::Node::COMMENT_NODE
           stacks.last << [:html, :comment, [:static, node.text]]
         else

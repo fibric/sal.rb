@@ -1,6 +1,7 @@
 module Sal
   class Engine < Temple::Engine
-    set_default_options :generator => Temple::Generators::ArrayBuffer
+    set_default_options   :format => :html,
+                          :generator => Temple::Generators::ArrayBuffer
 
     use Sal::Parser, :file, :tabsize, :encoding
     use Sal::Compiler
