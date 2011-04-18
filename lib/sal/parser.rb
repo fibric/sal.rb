@@ -59,7 +59,12 @@ module Sal
         case node.type
         when Nokogiri::XML::Node::ELEMENT_NODE
           content = [:multi]
-          stacks.last << [:html, :tag, ele, parse_attrs(node), false, content] 
+          attrs, code = parse_attrs(node)
+          if code
+            stacks.last << [:sal, :code, code, ele, attrs, content]
+          else
+            stacks.last << [:html, :tag, ele, attrs, false, content]
+          end
           stacks << content
           parse_nodeset(stacks, node) 
           stacks.pop
@@ -81,13 +86,18 @@ module Sal
     end
 
     def parse_attrs(node)
-      attrs = node.attribute_nodes.collect{|an| [an.name, [:static, an.value]] }
+      code  = nil
+      attrs = []
 
-      if attrs.empty?
-        [ :html, :staticattrs]
-      else
-        [ :html, :staticattrs] + attrs
+      node.attribute_nodes.each do |an|
+        if an.name == 'data-sal'
+          code = an.value
+        else
+          attrs << [an.name, [:static, an.value]]
+        end
       end
+
+      return [ :html, :staticattrs] + attrs, code
     end
   end
 end
