@@ -9,6 +9,10 @@ class Env
   def title
     "Sal test"
   end
+
+  def array_of_strings
+    %w{one two three}
+  end
 end
 
 class TestSal < MiniTest::Unit::TestCase
@@ -17,7 +21,10 @@ class TestSal < MiniTest::Unit::TestCase
   end
 
   def render(source, options = {}, &block)
-    Sal::Template.new(options[:file], options) { source }.render(options[:scope] || @env, &block)
+    tmpl = Sal::Template.new(options[:file], options) { source }
+    #TODO: just for debugging...will remove later
+    # puts tmpl.precompiled_template
+    tmpl.render(options[:scope] || @env, &block)
   end
 
   def assert_html(expected, source, options = {}, &block)

@@ -9,4 +9,13 @@ class TestCode < TestSal
     assert_html %q{<h1>Sal test</h1>}, source
   end
 
+  def test_array_of_strings
+    source = %q{
+<ul>
+  <li data-sal='array_of_strings'>This content will be replaced</li>
+</ul>
+}
+    assert_html %q{<ul><li>one</li><li>two</li><li>three</li></ul>}, source
+  end
+
 end

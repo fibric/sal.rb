@@ -3,13 +3,23 @@ module Sal
   # @api private
   class Compiler < Filter
 
+    def on_sal_tag(ele, attrs, closed, content)
+      [:html, :tag, ele, attrs, closed, compile(content)]
+    end
+
     def on_sal_code(code, tag, attrs, content)
-      tmp1 = tmp_var(:res)
+      tmp1, tmp2 = tmp_var(:res), tmp_var(:res)
 
       [:multi,
         [:block, "if #{tmp1} = #{code}"],
-          [:block, "if #{code}.kind_of?(String)"],
-            [:html, :tag, tag, attrs, false, [:dynamic, code]],
+          [:block, "if #{tmp1}.kind_of?(String)"],
+                      [:html, :tag, tag, attrs, false, [:dynamic, tmp1]],
+          [:block, "elsif #{tmp1}.kind_of?(Array)"],
+          [:block,    "#{tmp1}.each do |#{tmp2}|"],
+                         [:html, :tag, tag, attrs, false, [:dynamic, tmp2]],
+          [:block,    'end'],
+          [:block, "else"],
+                      [:html, :tag, tag, attrs, false, compile(content)],
           [:block, 'end'],
         [:block, 'end']
       ]

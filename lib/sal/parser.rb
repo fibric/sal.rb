@@ -54,16 +54,16 @@ module Sal
 
     def parse_nodeset(stacks, nodes)
       nodes.children.each do |node|
-        ele = node.name
+        tag = node.name
 
         case node.type
         when Nokogiri::XML::Node::ELEMENT_NODE
           content = [:multi]
           attrs, code = parse_attrs(node)
           if code
-            stacks.last << [:sal, :code, code, ele, attrs, content]
+            stacks.last << [:sal, :code, code, tag, attrs, content]
           else
-            stacks.last << [:html, :tag, ele, attrs, false, content]
+            stacks.last << [:sal, :tag, tag, attrs, false, content]
           end
           stacks << content
           parse_nodeset(stacks, node) 
