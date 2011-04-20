@@ -97,9 +97,7 @@ module Sal
         end
       end
 
-      #TODO: don't pass code in here, pass in the tmp_var used in the compiler somehow
-      # so we don't make the call twice
-      return [ :multi, [:html, :staticattrs] + attrs, [:dynamic, "Sal.parse_for_attributes(#{code})"]], code
+      return [:multi, [:html, :staticattrs] + attrs], code
     end
   end
 end

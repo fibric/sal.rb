@@ -25,4 +25,14 @@ class TestCode < TestSal
     assert_html %q{<h1 id='user_header'>User details</h1>}, source
   end
 
+  def test_array_of_objects
+    source = %q{
+<ul>
+  <li data-sal='doggies'>Doggies!</li>
+</ul>
+}
+    assert_html %q{<ul><li id='dog_1'>Monty</li><li id='dog_2'>Rupert</li><li id='dog_3'>Kaylee</li></ul>}, source
+
+  end
+
 end

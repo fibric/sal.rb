@@ -18,6 +18,12 @@ class Env
     {:id    => 'user_header',
      :html  => 'User details' }
   end
+
+  def doggies
+    [ {:id    => 'dog_1', :html => 'Monty'},
+      {:id    => 'dog_2', :html => 'Rupert'},
+      {:id    => 'dog_3', :html => 'Kaylee'} ]
+  end
 end
 
 class TestSal < MiniTest::Unit::TestCase
@@ -28,7 +34,7 @@ class TestSal < MiniTest::Unit::TestCase
   def render(source, options = {}, &block)
     tmpl = Sal::Template.new(options[:file], options) { source }
     #TODO: just for debugging...will remove later
-    # puts tmpl.precompiled_template
+    #puts '*'*40,tmpl.precompiled_template
     tmpl.render(options[:scope] || @env, &block)
   end
 

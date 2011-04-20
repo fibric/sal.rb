@@ -12,8 +12,7 @@ module Sal
   class << self
     def parse_for_attributes(result = nil)
       return unless result.kind_of?(Hash)
-      result.delete(:html)
-      " #{result.collect{ |k,v| "#{k}='#{v}'" }.join(' ')}"
+      " #{result.collect{ |k,v| "#{k}='#{v}'" unless k.to_s == 'html' }.compact.join(' ')}"
     end
 
     def parse_for_html(result = nil)
