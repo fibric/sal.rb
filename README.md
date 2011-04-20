@@ -20,3 +20,9 @@ As it happens, request were made to bring RuHL up-to-date and make it work with 
 
 After weeks of distractions and no real clue how to make a compilable RuHL , the solution presented itself and here we are.
 
+## Syntax
+
+...Coming soon.
+
+Refer to [sal.js](https://github.com/stonean/sal.js) for now.
+
