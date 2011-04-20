@@ -16,10 +16,10 @@ module Sal
                       [:html, :tag, tag, attrs, false, [:dynamic, tmp1]],
           [:block, "elsif #{tmp1}.kind_of?(Array)"],
           [:block,    "#{tmp1}.each do |#{tmp2}|"],
-                         [:html, :tag, tag, attrs, false, [:dynamic, tmp2]],
+                         [:html, :tag, tag, attrs, false, [:dynamic, "Sal.parse_for_html(#{tmp2})"]],
           [:block,    'end'],
           [:block, "else"],
-                      [:html, :tag, tag, attrs, false, compile(content)],
+                      [:html, :tag, tag, attrs, false, [:dynamic, "Sal.parse_for_html(#{tmp1})"]],
           [:block, 'end'],
         [:block, 'end']
       ]

@@ -13,6 +13,11 @@ class Env
   def array_of_strings
     %w{one two three}
   end
+
+  def user_header
+    {:id    => 'user_header',
+     :html  => 'User details' }
+  end
 end
 
 class TestSal < MiniTest::Unit::TestCase

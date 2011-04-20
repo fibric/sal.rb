@@ -18,4 +18,11 @@ class TestCode < TestSal
     assert_html %q{<ul><li>one</li><li>two</li><li>three</li></ul>}, source
   end
 
+  def test_single_object
+    source = %q{
+<h1 data-sal='user_header'>This will be replaced</h1>
+}
+    assert_html %q{<h1 id='user_header'>User details</h1>}, source
+  end
+
 end
