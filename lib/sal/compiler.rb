@@ -3,8 +3,8 @@ module Sal
   # @api private
   class Compiler < Filter
 
-    def on_sal_tag(ele, attrs, closed, content)
-      [:html, :tag, ele, attrs, closed, compile(content)]
+    def on_sal_tag(ele, attrs, content)
+      [:html, :tag, ele, attrs, false, compile(content)]
     end
 
     def on_sal_code(code, tag, attrs, content)

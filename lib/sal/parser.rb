@@ -63,7 +63,7 @@ module Sal
           if code
             stacks.last << [:sal, :code, code, tag, attrs, content]
           else
-            stacks.last << [:sal, :tag, tag, attrs, false, content]
+            stacks.last << [:sal, :tag, tag, attrs, content]
           end
           stacks << content
           parse_nodeset(stacks, node) 
