@@ -24,6 +24,10 @@ class Env
       {:id    => 'dog_2', :html => 'Rupert'},
       {:id    => 'dog_3', :html => 'Kaylee'} ]
   end
+
+  def home_page_title
+    {:class => 'home', :html => 'Welcome'}
+  end
 end
 
 class TestSal < MiniTest::Unit::TestCase

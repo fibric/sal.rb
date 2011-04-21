@@ -35,4 +35,10 @@ class TestCode < TestSal
 
   end
 
+  def test_class_attribute_combining
+    source = %q{
+<h1 class='funky' data-sal='home_page_title'>This will be replaced</h1>
+}
+    assert_html %q{<h1 class='funky home'>Welcome</h1>}, source
+  end
 end

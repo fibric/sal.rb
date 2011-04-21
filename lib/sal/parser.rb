@@ -87,17 +87,17 @@ module Sal
 
     def parse_attrs(node)
       code  = nil
-      attrs = []
+      attrs = {}
 
       node.attribute_nodes.each do |an|
         if an.name == 'data-sal'
           code = an.value
         else
-          attrs << [an.name, [:static, an.value]]
+          attrs[an.name.to_s] = an.value
         end
       end
 
-      return [:multi, [:html, :staticattrs] + attrs], code
+      return attrs, code
     end
   end
 end
