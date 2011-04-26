@@ -5,6 +5,14 @@ require 'sal'
 
 MiniTest::Unit.autorun
 
+class Obj
+  def initialize(hash = {})
+    hash.each do |k,v|
+      define_singleton_method k, lambda{ v }
+    end
+  end
+end
+
 class Env
   def title
     "Sal test"
@@ -23,6 +31,11 @@ class Env
     [ {:id    => 'dog_1', :html => 'Monty'},
       {:id    => 'dog_2', :html => 'Rupert'},
       {:id    => 'dog_3', :html => 'Kaylee'} ]
+  end
+
+  def users
+    [ Obj.new({:first => 'John', :last => 'Smith'}),
+      Obj.new({:first => 'Jane', :last => 'Doe'})]
   end
 
   def home_page_title

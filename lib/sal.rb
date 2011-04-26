@@ -2,6 +2,7 @@
 
 require 'temple'
 require 'sal/u'
+require 'sal/wrapper'
 require 'sal/parser'
 require 'sal/filter'
 require 'sal/compiler'

@@ -41,7 +41,8 @@ module Sal
         str.force_encoding(old_enc) unless str.valid_encoding?
       end
 
-      result = [:multi]
+      result = [:multi,
+                [:block, "_saldict = Sal::Wrapper.new(self)"]]
 
       doc = Nokogiri::XML(str)
 
@@ -52,7 +53,7 @@ module Sal
 
     private
 
-    def parse_nodeset(stacks, nodes)
+    def parse_nodeset(stacks, nodes, incode = false)
       nodes.children.each do |node|
         tag = node.name
 
@@ -61,19 +62,21 @@ module Sal
           content = [:multi]
           attrs, code = parse_attrs(node)
           if code
+            incode = true
             stacks.last << [:sal, :code, code, tag, attrs, content]
           else
+            incode = false
             stacks.last << [:sal, :tag, tag, attrs, content]
           end
           stacks << content
-          parse_nodeset(stacks, node) 
+          parse_nodeset(stacks, node, incode)
           stacks.pop
         when Nokogiri::XML::Node::TEXT_NODE
           str = node.text
           if str.strip.empty?
             stacks.last << [:newline]
           else
-            stacks.last << [:static, str] 
+            stacks.last << [:sal, :text, incode, str]
           end
         when Nokogiri::XML::Node::DTD_NODE
           stacks.last << [:static, node.to_s]

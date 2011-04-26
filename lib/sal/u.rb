@@ -4,6 +4,8 @@ module Sal
   class U 
     class << self
       def parse_for_attributes(result = nil, attrs = {})
+        result = result.value if result.kind_of?(Sal::Wrapper)
+
         return unless result.kind_of?(Hash)
 
         result = stringify_keys(result)
@@ -16,11 +18,14 @@ module Sal
         " #{result.collect{ |k,v| "#{k}='#{v}'" unless k.to_s == 'html' }.compact.join(' ')}"
       end
 
-      def parse_for_html(result = nil)
+      def parse_for_html(result, text = '')
+        result = result.value if result.kind_of?(Sal::Wrapper)
         if result.kind_of?(String)
           result
         elsif result.kind_of?(Hash)
           result.delete(:html)
+        else
+          text unless text.strip.empty?
         end
       end
 
