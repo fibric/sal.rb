@@ -27,10 +27,14 @@ class Env
      :html  => 'User details' }
   end
 
-  def doggies
-    [ {:id    => 'dog_1', :html => 'Monty'},
-      {:id    => 'dog_2', :html => 'Rupert'},
-      {:id    => 'dog_3', :html => 'Kaylee'} ]
+  def days_of_week
+    [ { :id => 'day_1', :html => 'Monday'},
+      { :id => 'day_2', :html => 'Tuesday'},
+      { :id => 'day_3', :html => 'Wednesday'},
+      { :id => 'day_4', :html => 'Thursday'},
+      { :id => 'day_5', :html => 'Friday'},
+      { :id => 'day_6', :html => 'Saturday'},
+      { :id => 'day_7', :html => 'Sunday'}]
   end
 
   def users
@@ -40,6 +44,22 @@ class Env
 
   def home_page_title
     {:class => 'home', :html => 'Welcome'}
+  end
+
+  def true_method
+    true
+  end
+
+  def false_method
+    false
+  end
+
+  def nil_method
+    nil
+  end
+
+  def empty_method
+    []
   end
 end
 

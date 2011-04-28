@@ -35,10 +35,10 @@ class TestCode < TestSal
   def test_array_of_hashes
     source = %q{
 <ul>
-  <li data-sal='doggies'>Doggies!</li>
+  <li data-sal='days_of_week'>Monday</li>
 </ul>
 }
-    assert_html %q{<ul><li id='dog_1'>Monty</li><li id='dog_2'>Rupert</li><li id='dog_3'>Kaylee</li></ul>}, source
+    assert_html %q{<ul><li id='day_1'>Monday</li><li id='day_2'>Tuesday</li><li id='day_3'>Wednesday</li><li id='day_4'>Thursday</li><li id='day_5'>Friday</li><li id='day_6'>Saturday</li><li id='day_7'>Sunday</li></ul>}, source
   end
 
   def test_array_of_objects
@@ -49,5 +49,25 @@ class TestCode < TestSal
 </tr>
 }
     assert_html %q{<tr><td>John</td><td>Smith</td></tr><tr><td>Jane</td><td>Doe</td></tr>}, source
+  end
+
+  def test_true_return
+    source = %q{ <li data-sal="true_method">Stay</li> }
+    assert_html '<li>Stay</li>', source
+  end
+
+  def test_false_return
+    source = %q{<ul><li data-sal="false_method">Remove</li></ul>}
+    assert_html '<ul></ul>', source
+  end
+
+  def test_nil_return
+    source = %q{<ul><li data-sal="nil_method">Remove</li></ul>}
+    assert_html '<ul></ul>', source
+  end
+
+  def test_empty_return
+    source = %q{<ul><li data-sal="empty_method">Remove</li></ul>}
+    assert_html '<ul></ul>', source
   end
 end

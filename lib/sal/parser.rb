@@ -7,22 +7,6 @@ module Sal
     set_default_options :tabsize => 4,
                         :encoding => 'utf-8'
 
-    class << self
-      #TODO: Remove node_types after fleshing out tests
-      def node_types
-        @node_types ||= define_node_types
-      end
-
-      private
-      def define_node_types
-        nt = {}
-        Nokogiri::XML::Node.constants.each do |name|
-          nt[eval("Nokogiri::XML::Node::#{name}")] = name if name =~ /_NODE$/
-        end
-        nt
-      end
-    end # class block
-
     def initialize(options = {})
       super
       @tab = ' ' * @options[:tabsize]
@@ -82,8 +66,6 @@ module Sal
           stacks.last << [:static, node.to_s]
         when Nokogiri::XML::Node::COMMENT_NODE
           stacks.last << [:html, :comment, [:static, node.text]]
-        else
-          raise "Unexpected node type: #{self.class.node_types[node.node_type]}"
         end
       end
     end

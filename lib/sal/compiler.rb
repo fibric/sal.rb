@@ -15,26 +15,22 @@ module Sal
       end
     end
 
-    def on_sal_nested(tag, attrs, content)
-      [:html, :tag, tag, ada(attrs, '_saldict'), false, compile(content)]
-    end
-
     def on_sal_code(code, tag, attrs, content)
       tmp1, tmp2 = tmp_var(:sal), tmp_var(:sal)
-
+      content = compile(content)
       [:multi,
         [:block,  "if (#{tmp1} = _saldict['#{code}'])"],
+        [:block,    "#{tmp2}  = _saldict"],
+        [:block,    "_saldict = #{tmp1}"],
         [:block,    "case (#{tmp1})"],
         [:block,    "when Array"],
-        [:block,      "#{tmp2} = _saldict"],
         [:block,      "#{tmp1}.each do |_saldict|"],
-                        compile([:sal, :nested, tag, attrs, content]),
+                        [:html, :tag, tag, ada(attrs), false, content],
         [:block,      'end'],
-        [:block,      "_saldict = #{tmp2}"],
         [:block,    "else"],
-                      [:html, :tag, tag, ada(attrs, tmp1), false,
-                        [:dynamic, "Sal::U.parse_for_html(#{tmp1})"]],
+                      [:html, :tag, tag, ada(attrs), false, content],
         [:block,    'end'],
+        [:block,    "_saldict = #{tmp2}"],
         [:block,  'end'],
       ]
     end
@@ -47,8 +43,8 @@ module Sal
       [:multi, [:html, :staticattrs] + a]
     end
 
-    def ada(attrs, tmpvar)
-      [:dynamic,  "Sal::U.parse_for_attributes(#{tmpvar}, #{attrs.inspect})"]
+    def ada(attrs)
+      [:dynamic,  "Sal::U.parse_for_attributes(_saldict, #{attrs.inspect})"]
     end
   end
 end
