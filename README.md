@@ -44,7 +44,7 @@ As you've no doubt noticed, the data-sal attribute is gone and the contents have
 
 
 #### Hash
-The next return value sal knows about is a hash. With the exception of an :html key, sal simply treats each the keys as attributes to be added to the tag. The value of the html key becomes the value of the tag.
+The next return value sal knows about is a hash. With the exception of an :html key, sal simply treats each of the keys as attributes to be added to the tag. The value of the html key becomes the value of the tag.
 
 Lets say there's a method called login_link:
     
@@ -64,6 +64,48 @@ If logged_in is false you'll get:
 
     <a href='/login'>Log in</a>
 
+#### Object
+For Rails users, you will probably need to access objects like an ActiveRecord model in your view. To simplify this, you can have tags scoped to an object.
+
+For example, you may have a user detail page:
+
+    <div data-sal="current_user">
+      <h1>Welcome <span data-sal="full_name">Awesome user</span></h1>
+      <form method="post" action="/account">
+        <input data-sal="email_input" type="text"/>
+      ...
+      </form>
+    </div>
+
+Since this will probably be a common scenario you probably don't want to write an input method for each attribute, so lets use method_missing:
+
+    def method_missing(meth)
+      meth = meth.to_s
+      if meth =~ /_input$/
+        name  = meth.split('_').first
+        klass = self.class.name.downcase
+        {:name => "#{klass}[#{name}]", :id => "#{klass}_#{name}", :value => send(name)}
+      else
+        super
+      end
+    end
+
+This will give you the Rails-y format for input tags. For example, if current_user returns a user object where:
+
+    class User < ActiveRecord::Base
+      def full_name
+        first_name + " " + last_name
+      end
+    def 
+
+    <!-- first_name = 'John', last_name = 'Smith, email = 'jsmith@test.com' -->
+    <div>
+      <h1>Welcome <span>John Smith</span></h1>
+      <form method="post" action="/account">
+        <input name="user[email]" id="user_email" value="jsmith@test.com" type="text"/>
+      ...
+      </form>
+    </div>
 
 #### Array
 If the return value is an array, sal repeats the markup for each item in the array applying the contents accordingly.
