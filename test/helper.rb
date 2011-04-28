@@ -37,6 +37,10 @@ class Env
       { :id => 'day_7', :html => 'Sunday'}]
   end
 
+  def user
+    Obj.new({:first => 'John', :last => 'Smith'})
+  end
+
   def users
     [ Obj.new({:first => 'John', :last => 'Smith'}),
       Obj.new({:first => 'Jane', :last => 'Doe'})]

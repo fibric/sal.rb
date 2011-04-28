@@ -70,4 +70,14 @@ class TestCode < TestSal
     source = %q{<ul><li data-sal="empty_method">Remove</li></ul>}
     assert_html '<ul></ul>', source
   end
+
+  def test_env_access_within_object_scope
+    source = %q{
+<div data-sal='user'>
+  <h1 data-sal='title'>Replace me</h1>
+  <p>Welcome <span data-sal='first'>Test</span></p>
+</div>
+}
+    assert_html '<div><h1>Sal test</h1><p>Welcome <span>John</span></p></div>', source
+  end
 end
