@@ -1,10 +1,15 @@
 module Sal
   # Compiles HTML into Temple::HTML expressions
   # @api private
-  class Compiler < Filter
+  class Compiler < Temple::Filter
+    def call(exp)
+      [:multi,
+       [:code, "_saldict = Sal::Wrapper.new(self)"],
+       super]
+    end
 
     def on_sal_tag(tag, attrs, content)
-      [:html, :tag, tag, format_attrs(attrs), false, compile(content)]
+      [:html, :tag, tag, format_attrs(attrs), compile(content)]
     end
 
     def on_sal_text(incode, text)
@@ -16,31 +21,25 @@ module Sal
     end
 
     def on_sal_code(code, tag, attrs, content)
-      tmp1, tmp2 = tmp_var(:sal), tmp_var(:sal)
+      tmp1, tmp2 = unique_name, unique_name
       content = compile(content)
-      [:multi,
-        [:block,  "if (#{tmp1} = _saldict['#{code}'])"],
-        [:block,    "#{tmp2}  = _saldict"],
-        [:block,    "_saldict = #{tmp1}"],
-        [:block,    "case (#{tmp1})"],
-        [:block,    "when Array"],
-        [:block,      "#{tmp1}.each do |_saldict|"],
-                        [:html, :tag, tag, ada(attrs), false, content],
-        [:block,      'end'],
-        [:block,    "else"],
-                      [:html, :tag, tag, ada(attrs), false, content],
-        [:block,    'end'],
-        [:block,    "_saldict = #{tmp2}"],
-        [:block,  'end'],
-      ]
+      [:if, "(#{tmp1} = _saldict['#{code}'])",
+       [:multi,
+        [:code, "#{tmp2}  = _saldict"],
+        [:code, "_saldict = #{tmp1}"],
+        [:case, tmp1,
+         ['Array',
+          [:block, "#{tmp1}.each do |_saldict|",
+           [:html, :tag, tag, ada(attrs), content]]],
+         [:else,
+          [:html, :tag, tag, ada(attrs), content]]],
+        [:code, "_saldict = #{tmp2}"]]]
     end
 
     private
 
     def format_attrs(attrs)
-      a = []
-      attrs.each{ |k,v| a << [k, [:static, v]] }
-      [:multi, [:html, :staticattrs] + a]
+      attrs.inject([:html, :attrs]) {|a, (k,v)| a << [:html, :attr, k, [:static, v]] }
     end
 
     def ada(attrs)

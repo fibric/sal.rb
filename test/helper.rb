@@ -5,6 +5,8 @@ require 'sal'
 
 MiniTest::Unit.autorun
 
+Sal::Engine.after Sal::Compiler, Temple::Filters::Validator
+
 class Obj
   def initialize(hash = {})
     hash.each do |k,v|

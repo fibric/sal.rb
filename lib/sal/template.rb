@@ -4,10 +4,10 @@ module Sal
   Template = Temple::Templates::Tilt(Sal::Engine, :register_as => :sal)
 
   if Object.const_defined?(:Rails)
-    RailsTemplate = Temple::Templates::Rails(Sal::Engine, :register_as => :sal)
-
-    RailsTemplate.set_default_options :generator => Temple::Generators::RailsOutputBuffer, 
-                                      :disable_capture => true
+    RailsTemplate = Temple::Templates::Rails(Sal::Engine,
+                                             :register_as => :sal,
+                                             :generator => Temple::Generators::RailsOutputBuffer,
+                                             :disable_capture => true)
   end
 end
 

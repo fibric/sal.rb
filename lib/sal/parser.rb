@@ -4,13 +4,7 @@ module Sal
   class Parser
     include Temple::Mixins::Options
 
-    set_default_options :tabsize => 4,
-                        :encoding => 'utf-8'
-
-    def initialize(options = {})
-      super
-      @tab = ' ' * @options[:tabsize]
-    end
+    set_default_options :encoding => 'utf-8'
 
     # Compile the string to a Temple expression
     #
@@ -25,13 +19,8 @@ module Sal
         str.force_encoding(old_enc) unless str.valid_encoding?
       end
 
-      result = [:multi,
-                [:block, "_saldict = Sal::Wrapper.new(self)"]]
-
-      doc = Nokogiri::XML(str)
-
-      parse_nodeset([result], doc)
-
+      result = [:multi]
+      parse_nodeset([result], Nokogiri::XML(str))
       result
     end
 
